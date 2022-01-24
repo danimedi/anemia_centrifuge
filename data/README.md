@@ -11,3 +11,4 @@
 - `device`: device identifier
 - `method`: centrifugation method used (manual/runun vs. electrical centrifuge)
 - `hematocrit`: hematocrit value obtained after centrifugation
+- `age_group`: individual's age group, three categories were created based on the age
