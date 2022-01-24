@@ -12,12 +12,12 @@ str(data)
 
 # please run the functions of "functions.R" file
 data %>%
-        group_by(method, sex, operator, device) %>%
-        var_summary(hematocrit)
+  group_by(method, sex, operator, device) %>%
+  var_summary(hematocrit)
 
 data %>%
-        group_by(method, sex, operator, device) %>%
-        var_mean_sd(hematocrit)
+  group_by(method, sex, operator, device) %>%
+  var_mean_sd(hematocrit)
 
 ## HERE COMPLETE THE GRAPHS DANIEEEEEL
 
@@ -45,7 +45,7 @@ Anova(m, type = 3, test.statistic = "F") # p < 0.05 (significant difference betw
 # adjusted results
 
 m <- lmer(hematocrit ~ method + sex + age_group + operator + device + (1|id), # checl ps
-         data)
+          data)
 Anova(m, type = 3, test.statistic = "F") # sex, age_group, operator and device not p < 0.05
 
 
@@ -112,7 +112,3 @@ with( data, interaction.plot( method, sex, hematocrit,
 
 plot(hematocrit ~ age, data, bg = data$sex, pch = 21)
 legend("bottomleft",levels(data$sex),col= 1:2 ,pch=16 ,box.lwd= 0)
-
-
-
-
