@@ -1,16 +1,15 @@
 library(readr)
 library(dplyr)
+library(here)
 
-data <- readr::read_rds(file = "database.rds")
+source(here("src/functions.R"))
+
+data <- readr::read_rds(here("data/database.rds"))
 data$id <- factor(data$id)
-str(data)
 
+# EXPLORATORY ANALYSIS -------------------
 
-########################################
-######### Exploratory Analysis #########
-########################################
-
-# please run the functions of "functions.R" file
+# Please run the functions of "functions.R" file
 data %>%
   group_by(method, sex, operator, device) %>%
   var_summary(hematocrit)
@@ -22,9 +21,7 @@ data %>%
 ## HERE COMPLETE THE GRAPHS DANIEEEEEL
 
 
-########################################
-# Analysis (Linear Mixed Effect Model) #
-########################################
+# ANALYSIS (Linear Mixed Effect Model) -------------
 
 library(lme4)
 library(lmerTest)
