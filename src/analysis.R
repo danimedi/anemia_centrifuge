@@ -2,7 +2,7 @@ library(readr)
 library(dplyr)
 library(here)
 
-source(here("src/functions.R"))
+sapply(list.files(here("src/functions"), full.names = TRUE), source)
 
 data <- readr::read_rds(here("data/database.rds"))
 data$id <- factor(data$id)
@@ -72,6 +72,26 @@ var_among <- as.numeric(VarCorr(m)[1,1])
 var_within <- as.numeric(VarCorr(m)[3,1])
 
 var_among/(var_among+var_within)
+
+
+# ROC curve and AUC ---------------------------
+
+library(pROC)
+
+data2 <- determine_anemia(data)
+str(data2)
+
+par(pty = "s")
+roc( data2$anemia_centrifuge, data2$runrun,
+     plot = T, legacy.axes = T, percent = T,
+     xlab = "False Positive Percentage", ylab = "True Positive Percentage")
+
+
+ROC <- roc( data2$anemia_centrifuge, data2$runrun,
+            plot = T, legacy.axes = T)
+
+coords(ROC)
+
 
 
 # DISTRIBUCIONES NORMALES (p > 0.05)
