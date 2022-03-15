@@ -4,10 +4,6 @@ library(tidyr)
 library(dplyr)
 library(purrr)
 
-dat <- read_rds(here("data/database.rds"))
-# Differences between the hematocrit values obtained by centrifuge or runrun
-dat <- dat %>% pivot_wider(names_from = method, values_from = hematocrit)
-
 #' Diagnosis of anemia based on the hematocrit values
 #' 
 #' This function includes the processes of transforming hematocrit values to
@@ -74,11 +70,28 @@ anemia_with_hematocrit <- function(hematocrit, age, sex) {
   detect_anemia(hemoglobin = adjusted_hemoglobin, age = age, sex = sex)
 }
 
-dat$anemia_centrifuge <- pmap_lgl(
-  select(dat, hematocrit = centrifuge, age, sex),
-  anemia_with_hematocrit
-)
-dat$anemia_runrun <- pmap_lgl(
-  select(dat, hematocrit = runrun, age, sex),
-  anemia_with_hematocrit
-)
+
+#' Modify the main data set to have columns with the information about the
+#' detection of anemia
+#'
+#' @param df Data frame (main data set)
+#'
+#' @return Data frame with the columns `anemia_centrifuge` and `anemia_runrun`
+#'   which have the information about the diagnosis of anemia
+#' @export
+#'
+#' @examples
+#' dat <- read_rds(here("data/database.rds"))
+#' determine_anemia(dat)
+determine_anemia <- function(df) {
+  df <- df %>% pivot_wider(names_from = method, values_from = hematocrit)
+  df$anemia_centrifuge <- pmap_lgl(
+    select(df, hematocrit = centrifuge, age, sex),
+    anemia_with_hematocrit
+  )
+  df$anemia_runrun <- pmap_lgl(
+    select(df, hematocrit = runrun, age, sex),
+    anemia_with_hematocrit
+  )
+  df
+}
