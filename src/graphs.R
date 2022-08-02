@@ -8,11 +8,17 @@ dat <- read_rds(here("data/database.rds"))
 
 # Differences between the hematocrit values obtained by centrifuge or runrun
 dat_plot <- dat %>% pivot_wider(names_from = method, values_from = hematocrit)
+
 blind_operator_names <- function(x) {
   n <- as.integer(as.factor(x))
   paste("operador", n)
 }
 dat_plot <- dat_plot %>% mutate(operator = blind_operator_names(operator))
+
+# Reorder the hematocrit values
+dat_plot <- dat_plot %>%
+  arrange(centrifuge) %>%
+  mutate(id = factor(id, levels = id))
 
 base_diff_plot <- ggplot(dat_plot) +
   geom_point(aes(id, runrun), color = "blue") +
