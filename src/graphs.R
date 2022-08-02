@@ -20,12 +20,17 @@ dat_plot <- dat_plot %>%
   arrange(centrifuge) %>%
   mutate(id = factor(id, levels = id))
 
+# Set the output directory
+dir <- here("results/graphs")
+
 base_diff_plot <- ggplot(dat_plot) +
   geom_point(aes(id, runrun), color = "blue") +
   geom_point(aes(id, centrifuge), color = "red") +
   geom_linerange(aes(id, ymax = runrun, ymin = centrifuge))
 
-dir <- "results/graphs"
+base_diff_plot
+ggsave(here(dir, "all_hematocrit_values.png"))
+
 base_diff_plot +
   facet_wrap(vars(operator))
 ggsave(here(dir, "difference_between_operators.png"))
