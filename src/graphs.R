@@ -28,11 +28,28 @@ base_diff_plot <- ggplot(dat_plot) +
   geom_point(aes(id, centrifuge), color = "red") +
   geom_linerange(aes(id, ymax = runrun, ymin = centrifuge))
 
-base_diff_plot
+base_diff_plot +
+  theme(
+    axis.text.x = element_blank()
+  ) +
+  labs(
+    x = "Muestras",
+    y = "Valor de hematocrito"
+  ) +
+  scale_y_continuous(breaks = scales::breaks_extended(n = 10))
 ggsave(here(dir, "all_hematocrit_values.png"))
 
 base_diff_plot +
-  facet_wrap(vars(operator))
+  facet_wrap(vars(operator)) +
+  theme(
+    axis.text.x = element_blank()
+  ) +
+  labs(
+    x = "Muestras",
+    y = "Valor de hematocrito"
+  ) +
+  scale_y_continuous(breaks = scales::breaks_extended(n = 10))
+  
 ggsave(here(dir, "difference_between_operators.png"))
 
 base_diff_plot +
